@@ -1,0 +1,66 @@
+% Beamer theme pyMOR
+%
+% Copyright 2020 Jens Saak
+% Licensed under CC-BY-SA 4.0 International.
+%
+
+\ProvidesPackage{beamercolorthemepymor}
+
+
+\definecolor{pymor_blue}{HTML}{3155a0}
+\definecolor{pymor_left}{HTML}{4aadd5}
+\definecolor{pymor_center}{HTML}{2d4697}
+\definecolor{pymor_eighty}{HTML}{232a58}
+\definecolor{pymor_right}{HTML}{1b1c3a}
+
+
+\definecolor{chipColor}{RGB}{60,70,70}
+\definecolor{hsrmRed}{rgb}{0.882352941,0,0.098039216}
+\definecolor{hsrmRedDark}{rgb}{0.588235294,0,0.058823529}
+\definecolor{hsrmWarmGreyDark}{rgb}{0.274509804,0.254901961,0.235294118}
+\definecolor{hsrmWarmGreyLight}{rgb}{0.666666667,0.647058824,0.62745098}
+\definecolor{paleGrey}{rgb}{0.9,0.9,0.9}
+
+% General
+\setbeamercolor{normal text}{fg=hsrmWarmGreyDark}
+\setbeamercolor{structure}{fg=hsrmWarmGreyDark}
+\setbeamercolor{alerted text}{fg=hsrmRed}
+\setbeamercolor{example text}{fg=white}
+\setbeamercolor{copyright text}{fg=hsrmWarmGreyLight}
+\setbeamercolor{palette primary}{fg=hsrmWarmGreyDark}
+\setbeamercolor{palette secondary}{fg=pymor_blue,bg=pymor_blue!10}
+\setbeamercolor{palette tertiary}{fg=black,bg=hsrmWarmGreyLight}
+\setbeamercolor{palette quaternary}{fg=white, bg=pymor_blue}
+% Titlepage
+\setbeamercolor{title}{parent=white}
+\setbeamercolor{subtitle}{parent=white}
+\setbeamercolor{institute}{parent=white}
+% Content
+\setbeamercolor{frametitle}{fg=pymor_blue}
+% Blocks
+\setbeamercolor{block title}{parent=palette quaternary}
+\setbeamercolor{block body}{parent=palette secondary}
+\setbeamercolor{block title example}{fg=white, bg=hsrmSec1Dark}
+\setbeamercolor{block body example}{fg=white, bg=hsrmSec1}
+\setbeamercolor{block title alerted}{fg=white, bg=hsrmRedDark}
+\setbeamercolor{block body alerted}{fg=white, bg=hsrmRed}
+% Notes
+\setbeamercolor{note page}{fg=hsrmWarmGreyDark,bg=hsrmWarmGreyLight}
+\setbeamercolor{note title}{fg=white, bg=hsrmWarmGreyDark}
+\setbeamercolor{note date}{parent=note title}
+% Page Number
+\setbeamercolor{section in head/foot}{fg=white,bg=white}
+\setbeamercolor{page number in head/foot}{fg=hsrmWarmGreyDark}
+\setbeamercolor{section in toc}{fg=paleGrey, bg=pymor_blue}
+\setbeamercolor{local structure}{fg=pymor_blue!70,bg=pymor_blue}
+\setbeamercolor{section in toc shaded}{fg=pymor_blue, bg=pymor_blue}
+
+
+\pgfdeclarehorizontalshading{pymor}{100bp}%
+{%
+  color(0bp)=(pymor_left);%
+  color(51bp)=(pymor_center);%
+  color(81bp)=(pymor_eighty);%
+  color(100bp)=(pymor_right)%
+}
+\mode<all>

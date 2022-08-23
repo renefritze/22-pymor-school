@@ -1,0 +1,4 @@
+texmf-var
+/*.pdf
+pymor-beamer/*.pdf
+.texlive2018

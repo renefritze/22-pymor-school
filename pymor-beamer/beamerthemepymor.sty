@@ -1,0 +1,96 @@
+% Beamer theme pyMOR
+%
+% Copyright 2020 Jens Saak
+% Licensed under CC-BY-SA 4.0 International.
+%
+
+\ProvidesPackage{beamerthemepymor}
+
+%{{{ --- Packages ---------------------
+
+\usepackage{tikz}
+
+\usetikzlibrary{calc,backgrounds}
+\usecolortheme{pymor}
+\usefonttheme{pymor}
+\useinnertheme{pymor}
+\useoutertheme{pymor}
+\setbeamersize{text margin left=.05\paperwidth}
+\setbeamersize{text margin right=.05\paperwidth}
+%}}}
+
+%{{{ --- Titlepage --------------------
+
+\def\maketitle{\ifbeamer@inframe\titlepage\else\frame[plain]{\titlepage}\fi}
+
+
+
+\def\titlepage{\usebeamertemplate{title page}}
+\setbeamertemplate{title page}
+{
+  \begin{minipage}[b][\paperheight]{\textwidth}
+    \begin{center}
+    \vspace*{4.5em}
+      \includegraphics[scale=0.5]{logo/pymor_logo.png}
+    \end{center}
+    \vfill
+    \ifx\inserttitle\@empty%
+    \else%
+    {\raggedright\linespread{1.0}\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
+    \vspace*{0.5em}
+    \fi%
+    \ifx\insertsubtitle\@empty%
+    \else%
+    {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+    \vspace*{0.5em}
+    \fi%
+    \begin{tikzpicture}[shading=pymor]%
+      \shade (0, 0) rectangle (\textwidth, 0.5mm);
+    \end{tikzpicture}%
+    \vspace*{1em}
+    \ifx\insertauthor\@empty%
+    \else%
+    {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+    \vspace*{1em}
+    \fi%
+    \ifx\insertdate\@empty%
+    \else%
+    {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
+    \fi%
+    \ifx\insertinstitut\@empty%
+    \else%
+    \vspace*{3mm}
+    {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+    \fi%
+    \ifx\inserttitlegraphic\@empty%
+    \else%
+    \vspace*{1cm}
+    {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+    \fi%
+    \vfill
+    \vspace*{5mm}
+  \end{minipage}
+}
+
+%}}}
+
+%{{{ --- Commands ---------------------
+
+\newcommand{\insertsectionHEAD}{%
+  \expandafter\insertsectionHEADaux\insertsectionhead}
+  \newcommand{\insertsectionHEADaux}[3]{\textsc{\MakeLowercase{#3}}
+}
+
+\newcommand{\plain}[2][]{%
+  \begingroup
+  \setbeamercolor{background canvas}{bg=pymor_blue}
+  \begin{frame}[plain]{#1}
+    \centering
+    \vfill\vspace{1em}\usebeamerfont{section title}\textcolor{white}{\scshape #2}\vfill
+  \end{frame}
+  
+  \endgroup
+}
+
+%}}}
+\mode<all>

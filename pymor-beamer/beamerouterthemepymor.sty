@@ -1,0 +1,146 @@
+%{{{ --- Progressbar ------------------
+\pgfdeclareimage[height=2.5ex]{pymorlogo}{pymor_logo_white-crop}
+
+\makeatletter
+\def\progressbar@sectionprogressbar{}
+\def\progressbar@titleprogressbar{}
+\newcounter{progressbar@tmpcounta} % auxiliary counter
+\newcounter{progressbar@tmpcountsection} % auxiliary counter
+\newcounter{progressbar@tmpcountb} % auxiliary counter
+\newdimen\progressbar@tmpdim{}    % auxiliary dimension
+
+\def\progressbar@titleprogressbar{%
+  \setcounter{progressbar@tmpcounta}{\numexpr\insertframenumber - \insertsectionstartframe}
+  \setcounter{progressbar@tmpcountb}{\numexpr\insertsectionendframe - \insertsectionstartframe}
+  \ifnum\value{progressbar@tmpcounta}<1
+  \setcounter{progressbar@tmpcountb}{1}
+  \fi
+  \ifnum\value{progressbar@tmpcountb}<1
+  \setcounter{progressbar@tmpcountb}{1}
+  \fi
+  \ifnum\value{progressbar@tmpcountb}>1
+  \progressbar@tmpdim=\paperwidth\relax
+  \divide\progressbar@tmpdim by 100
+  \multiply\progressbar@tmpdim by \arabic{progressbar@tmpcounta}
+  \divide\progressbar@tmpdim by \arabic{progressbar@tmpcountb}
+  \multiply\progressbar@tmpdim by 100
+  \fi
+  
+  \begin{tikzpicture}[tight background, shading=pymor]
+    \shade (0, 0) rectangle (\paperwidth, 1pt);
+    \draw[pymor_blue!10, fill=pymor_blue!10] (\progressbar@tmpdim, 0) rectangle (\paperwidth, 1pt);    
+  \end{tikzpicture}
+}
+
+\setbeamertemplate{headline}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.25cm,ht=12pt,dp=7pt]{block title}%
+    
+    \ifx\insertsubsection\empty
+    \usebeamerfont{frametitle in head}{%
+      \raisebox{-2.5pt}{\pgfuseimage{pymorlogo}}%
+      \hskip1em\vphantom{\(|\)}\insertsection%
+    }%
+    \else \raisebox{-2.5pt}{\pgfuseimage{pymorlogo}}\hskip1em%
+    \usebeamerfont{frametitle in
+      head}{\insertsection}~$|$\usebeamerfont{subtitle in head}{~\insertsubsection}
+    \fi
+  \end{beamercolorbox}%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1.5pt,dp=5pt]{section}
+    \progressbar@titleprogressbar
+  \end{beamercolorbox}
+  \nointerlineskip
+}
+% }}} progress bar
+
+% Insert frame with section title at every section start
+\AtBeginSection[]{
+  \begingroup
+  \setbeamercolor{background canvas}{bg=pymor_blue}
+  \setbeamertemplate{frametitle}[plain]
+  \setbeamertemplate{subsection in toc}
+  {\leavevmode\leftskip=2em$\bullet$\hskip1em\inserttocsubsection\par}
+ 
+  \setbeamercolor{subsection in toc}{fg=paleGrey, bg=pymor_blue}
+  \ifnum\value{framenumber}>1
+  \begin{frame}[noframenumbering,plain]
+    \frametitle{Section Contents}
+    \LARGE
+    \tableofcontents[currentsection,sectionstyle=show/hide,subsectionstyle=hide/show/hide]
+  \end{frame}
+  \fi
+  \endgroup
+}
+
+
+%---------------------------------------------------------------------
+% Frametitle
+% ---------------------------------------------------------------------
+\setbeamertemplate{frametitle}{\insertframetitle}
+\defbeamertemplate{frametitle}{plain}{%
+  \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.25cm,ht=12pt,dp=7pt]{block title}
+    \usebeamerfont{frametitle in head}{%
+      \raisebox{-2.5pt}{\pgfuseimage{pymorlogo}}%
+      \hskip1em\vphantom{\(|\)}\insertframetitle%
+    }%
+  \end{beamercolorbox}
+}   
+
+% {{{
+
+\makeatletter
+\newcount\beamer@sectionstartframe
+\newcount\beamer@sectionendframe
+
+\beamer@sectionstartframe=1
+
+\apptocmd{\beamer@section}{\addtocontents{nav}{\protect\headcommand{%
+      \protect\beamer@sectionframes{\the\beamer@sectionstartframe}{\the\c@framenumber}}}}{}{}
+\apptocmd{\beamer@section}{\beamer@sectionstartframe=\c@framenumber\advance\beamer@sectionstartframe by1\relax}{}{}
+\AtEndDocument{\immediate\write\@auxout{\string\@writefile{nav}%
+
+    {\noexpand\headcommand{\noexpand\beamer@sectionframes{\the\beamer@sectionstartframe}{\the\c@framenumber}}}}}{}{}
+\def\beamer@startframeofsection{1}
+\def\beamer@endframeofsection{1}
+\def\beamer@sectionframes#1#2{%
+  \ifnum\c@framenumber<#1%
+  \else%
+  \ifnum \c@framenumber>#2%
+  \else%
+  \gdef\beamer@startframeofsection{#1}%
+  \gdef\beamer@endframeofsection{#2}%
+  \fi%
+  \fi%
+}
+\newcommand\insertsectionstartframe{\beamer@startframeofsection}
+\newcommand\insertsectionendframe{\beamer@endframeofsection}
+
+\def\beamertextwidth{\dimexpr 0.875 \textwidth\relax}
+
+
+
+
+% }}}
+%{{{ --- Footline/footnote ------------
+
+\usenavigationsymbolstemplate{}
+\setbeamertemplate{footline}
+{%
+  \begin{beamercolorbox}[wd=\textwidth,ht=3ex,dp=3ex,leftskip=0.3cm,rightskip=0.3cm]{structure}%
+    \hfill\usebeamerfont{page number in head/foot}%
+    \insertframenumber{} / \inserttotalframenumber%
+  \end{beamercolorbox}%
+}
+
+
+
+
+\setbeamertemplate{footnote}
+{%
+  \parindent 0em\noindent%
+  \raggedright
+  \usebeamercolor{footnote}\hbox to 0.8em{\hfil\insertfootnotemark}\insertfootnotetext\par%
+}
+
+%}}}

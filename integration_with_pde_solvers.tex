@@ -1,0 +1,147 @@
+\documentclass[%
+  10pt,
+  compress,
+  table,
+]{beamer}
+
+\usetheme{pymor}
+
+\usepackage{xspace}
+\usepackage{relsize}
+
+\newcommand{\mycode}[1]{\textnormal{\texttt{#1}}}
+\newcommand{\cpp}{\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}{\textbf{++}}}\xspace}
+\newcommand{\fenics}{\mycode{FEniCS}}
+\newcommand{\ngsolve}{\mycode{NGSolve}}
+\newcommand{\deal}{\mycode{deal.II}}
+\newcommand{\dunext}{\mycode{Dune XT}}
+\newcommand{\pymor}{\mycode{pyMOR}}
+
+\title{\Huge Integration with \\External PDE Solvers}
+% \subtitle{}
+\author{René Fritze}
+% \institute{}
+\date{August 24, 2022}
+
+\usepackage{booktabs}
+\usepackage{makecell}
+\colorlet{tableheadcolor}{pymor_blue!50}
+\colorlet{tablerowcolor}{pymor_blue!20}
+
+\usepackage{minted}
+\newminted{python}{fontsize=\scriptsize,
+     numbersep=8pt,
+     gobble=4}
+
+
+
+\begin{document}
+\maketitle
+
+\begin{frame}{Overview}
+
+\end{frame}
+
+\begin{frame}{Available Bindings}
+  \begin{itemize}
+    \item \fenics
+    \item \ngsolve
+    \item \deal
+    \item \dunext
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Thermalblock Demo}
+Easily switch the same reduction code from one discretization to
+another. Here: \fenics + \ngsolve + \pymor 
+\end{frame}
+
+\begin{frame}[fragile]{Generic Algorithms via Abstraction}
+\begin{itemize}
+  \item VectorSpaceInterface
+  \item VectorArrayInterface
+  \item OperatorInterface
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Bindings Setup}
+\begin{itemize}
+\item Vector Implementation derived from
+\mintinline{python}{pymor.vectorarrays.list.CopyOnWriteVector}
+\item VectorSpace Implementation derived from
+\mintinline{python}{pymor.vectorarrays.list.ListVectorSpace}
+\item Operator Implementation derived from
+\mintinline{python}{pymor.operators.interface.Operator}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Requirements: VectorWrapper} 
+\begin{block}{Direct}
+  Via \mintinline{python}{pymor.vectorarrays.list.CopyOnWriteVector}
+  \begin{itemize}
+    \item  \mintinline{python}{from_instance(cls, instance)}
+    \item \mintinline{python}{_copy_data()}
+    \item \mintinline{python}{_scal(alpha), _axpy(alpha, x)}
+  \end{itemize}
+\end{block}
+\begin{block}{Transitive}
+  Via \mintinline{python}{pymor.vectorarrays.list.Vector}
+  \begin{itemize}
+    \item \mintinline{python}{amax(), norm(), norm2()}
+    \item \mintinline{python}{dofs(dof_indices)}
+  \end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{Requirements: VectorWrapper} 
+ 
+  \begin{block}{Optional}
+    Via \mintinline{python}{pymor.vectorarrays.list.Vector}
+    \begin{itemize}
+      \item \mintinline{python}{inner()}
+      \item \mintinline{python}{to_numpy(self, ensure_copy)}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Requirements: VectorSpace}
+  \begin{itemize}
+    \item \mintinline{python}{zero_vector()}
+    \item \mintinline{python}{make_vector(obj)}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Requirements: Operator}
+  \begin{itemize}
+    \item \mintinline{python}{__init__(self, op)}
+    \item \mintinline{python}{apply(self, U, mu=None)}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Bindings Types}
+\begin{itemize}
+\item Pure Python
+NGSolve, FEniCS, pyMOR
+\item Python bindings for native (C/C ++) data + pyMOR Wrappers
+deal.II, minimal C ++ Demo
+\item Python wrapper for on-disk serialized data
+\item Python wrapper for remote discretization server
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Tutorial}
+
+\end{frame}
+
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% ispell-local-dictionary: "en_US"
+%%% End:

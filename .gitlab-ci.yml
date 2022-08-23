@@ -1,0 +1,35 @@
+# This file is part of the dune-xt project:
+#   https://github.com/dune-community/dune-xt-super
+# The copyright lies with the authors of this file (see below).
+# License: BSD 2-Clause License (http://opensource.org/licenses/BSD-2-Clause)
+# Authors:
+#   Rene Milk       (2017)
+
+image: dunecommunity/gitlabci-dockerindocker
+
+.docker:
+  tags:
+    - docker-in-docker
+  retry:
+      max: 2
+      when:
+          - always
+  image: docker:stable
+  variables:
+      DOCKER_HOST: tcp://docker:2375/
+      DOCKER_DRIVER: overlay2
+  before_script:
+      - apk --update add openssh-client rsync git file make bash
+      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+      - git submodule update --init --recursive
+      - git submodule status
+  services:
+      - docker:dind
+
+integration_with_pde_solvers:
+  extends: .docker
+  script:
+      - make integration_with_pde_solvers
+  artifacts:
+      paths:
+      - integration_with_pde_solvers.pdf
